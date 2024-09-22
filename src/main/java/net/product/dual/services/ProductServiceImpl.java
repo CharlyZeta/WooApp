@@ -1,60 +1,25 @@
 package net.product.dual.services;
 
-import com.icoderman.woocommerce.ApiVersionType;
-import com.icoderman.woocommerce.EndpointBaseType;
-import com.icoderman.woocommerce.WooCommerce;
-import com.icoderman.woocommerce.WooCommerceAPI;
-import com.icoderman.woocommerce.oauth.OAuthConfig;
+import com.vaadin.flow.data.provider.DataProvider;
 import net.product.dual.model.ProductDTO;
 import net.product.dual.repositories.ProductRepositories;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authorization.method.AuthorizeReturnObject;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
 
-    private List<ProductDTO> productos;
     private final ProductRepositories productRepository;
+    private ProductRepositories repoProduct;
 
+    @Autowired
     public ProductServiceImpl(ProductRepositories productRepository) {
         this.productRepository = productRepository;
     }
 
-    @Override
-     public List<ProductDTO> buscarProductosPorCategoria() {
-          return null;
-     }
-
-     @Override
-     public Optional<ProductDTO> buscarProductoDTOPorId() {
-          return Optional.empty();
-     }
-
-     @Override
-     public Optional<List<ProductDTO>> buscarProductosPorNombre() {
-          return Optional.empty();
-     }
-
-     @Override
-     public Optional<ProductDTO> buscarProductoPorSku() {
-          return Optional.empty();
-     }
-
-    @Override
-    public void guardarProductos(List<ProductDTO> productos) {
-        productRepository.saveAll(productos);
-    }
-
-    @Override
-    public void guardarProducto(ProductDTO producto) {
-        productRepository.save(producto);
-    }
-
-    @Override
-    public List<ProductDTO> buscarTodos() {
-        return productRepository.findAll();
-    }
 
     public List<ProductDTO> convertirMapasAProductosDTOs(List<Map<String, Object>> productosMapas) {
         List<ProductDTO> productosDTO = new ArrayList<>();
@@ -68,4 +33,35 @@ public class ProductServiceImpl implements ProductService{
         }
         return productosDTO;
     }
+
+    @Override
+    public void guardarProductos(List<ProductDTO> productos) {
+
+    }
+
+    @Override
+    public ProductDTO guardarProducto(ProductDTO producto) {
+        return null;
+    }
+
+    @Override
+    public List<ProductDTO> MostrarTodos(String filterText) {
+        if (filterText == null || filterText.isEmpty()) {
+            return productRepository.findAll();
+        } else {
+            return productRepository.findByNombreOrSkuContainingIgnoreCase(filterText);
+        }
+    }
+
+    @Override
+    public List<ProductDTO> buscarProductosPorCategoria() {
+        return null;
+    }
+
+    @Override
+    public ProductDTO buscarProductoDTOPorId(Long id) {
+        return productRepository.findById(Math.toIntExact(id)).orElse(null);
+    }
+
+
 }

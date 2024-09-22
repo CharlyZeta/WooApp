@@ -5,6 +5,7 @@ import com.icoderman.woocommerce.EndpointBaseType;
 import com.icoderman.woocommerce.WooCommerce;
 import com.icoderman.woocommerce.WooCommerceAPI;
 import com.icoderman.woocommerce.oauth.OAuthConfig;
+import com.vaadin.flow.spring.security.VaadinWebSecurity;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import net.product.dual.model.Categoria;
@@ -17,6 +18,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,6 +51,7 @@ public class ProductAppApplication {
 
         SpringApplication.run(ProductAppApplication.class, args);
     }
+
     private static Map<Long, Categoria> categoriasUnicas = new HashMap<>();
 
     @PostConstruct
@@ -59,7 +65,7 @@ public class ProductAppApplication {
 
     @PostConstruct
     public void guardarRegistros(){
-        importaProductos();
+        //importaProductos();
     }
 
     public void importaProductos() {
